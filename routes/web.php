@@ -1,10 +1,10 @@
 <?php
-use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\MovieController;
 
-Route::get('/practice', [PracticeController::class, 'sample']);
-Route::get('/practice2', [PracticeController::class, 'sample2']);
-Route::get('/practice3', [PracticeController::class, 'sample3']);
-Route::get('/getPractice', [PracticeController::class, 'getPractice']);
 
-Route::get('/movies', [movieController::class, 'index']);
+Route::get('/movies',[MovieController::class,'index'])->name('index');
+
+Route::get('/admin/movies',[MovieController::class,'admin'])->name('admin.movies.index');
+Route::get('/admin/movies/create',[MovieController::class,'create'])->name('admin.create');
+Route::post('/admin/movies/store',[MovieController::class,'store'])->name('admin.store');
+
