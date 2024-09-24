@@ -7,6 +7,11 @@
 </head>
 <body>
   <h1>映画一覧</h1>
+  @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+  @endif
   <table>
     <thead>
       <tr>
@@ -25,6 +30,14 @@
         <td>{{ $movie->published_year }}</td>
         <td>{{ $movie->is_showing ? '上映中' : '上映予定' }}</td>
         <td>{{ $movie->description }}</td>
+        <td>
+          <a href="{{ route('admin.edit', $movie->id) }}" class="btn btn-sm btn-primary">編集</a>
+          <form action="{{ route('admin.movies.destroy', $movie->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">削除</button>
+          </form>
+        </td>
       </tr>
       @endforeach
     </tbody>
