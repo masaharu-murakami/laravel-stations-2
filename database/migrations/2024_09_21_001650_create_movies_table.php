@@ -15,11 +15,12 @@ class CreateMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->text('title')->uniqid;
-            $table->text('image_url');
-            $table->integer('published_year');
-            $table->text('description')->nullable();
-            $table->boolean('is_showing');
+            $table->string('title')->unique()->comment('映画タイトル');
+            $table->text('image_url')->comment('画像URL');
+            $table->integer('published_year')->comment('公開年');
+            $table->tinyInteger('is_showing')->default(false)->comment('公開中');
+            $table->text('description')->comment('概要');
+            $table->unsignedBigInteger('genre_id')->nullable(); // 外部キーを持たないカラムとして設定
             $table->timestamps();
         });
     }

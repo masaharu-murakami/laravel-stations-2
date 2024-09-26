@@ -23,17 +23,17 @@
         @csrf
         <div>
             <label for="title">映画タイトル:</label>
-            <input type="text" name="title" id="title" value="{{ old('title') }}">
+            <input type="text" name="title" id="title" value="{{ old('title') }}" required>
         </div>
 
         <div>
             <label for="image_url">画像URL:</label>
-            <input type="text" name="image_url" id="image_url" value="{{ old('image_url') }}">
+            <input type="text" name="image_url" id="image_url" value="{{ old('image_url') }}" required>
         </div>
 
         <div>
             <label for="published_year">公開年:</label>
-            <input type="number" name="published_year" id="published_year" value="{{ old('published_year') }}">
+            <input type="number" name="published_year" id="published_year" value="{{ old('published_year') }}" required>
         </div>
 
         <div>
@@ -43,10 +43,16 @@
 
         <div>
             <label for="description">概要:</label>
-            <textarea name="description" id="description" rows="5">{{ old('description') }}</textarea>
+            <textarea name="description" id="description" rows="5" required>{{ old('description') }}</textarea>
+        </div>
+
+        <div>
+            <label for="genre">ジャンル:</label>
+             <input type="text" name="genre" id="genre" value="{{ old('genre', $movie->genre->name ?? '') }}" required>
         </div>
 
         <button type="submit">登録する</button>
+        <a href="{{ route('admin.movies.index') }}">一覧</a>
     </form>
 </body>
 </html>

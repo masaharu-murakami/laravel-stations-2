@@ -4,7 +4,7 @@
 <div class="container">
     <h1>映画の編集</h1>
 
-    <form action="{{ route('admin.update', $movie->id) }}" method="POST">
+    <form action="{{ route('admin.movies.update', $movie->id) }}" method="POST">
         @csrf
         @method('PATCH')
 
@@ -41,6 +41,11 @@
         <div class="form-group">
             <label for="description">説明</label>
             <textarea name="description" id="description" class="form-control">{{ old('description', $movie->description) }}</textarea>
+        </div>
+
+        <div>
+            <label for="genre">ジャンル</label>
+            <input type="text" name="genre" id="genre" value="{{ old('genre', $movie->genre->name ?? '') }}" required>
         </div>
 
         <button type="submit" class="btn btn-primary">更新</button>
