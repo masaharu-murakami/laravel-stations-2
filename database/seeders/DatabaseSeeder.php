@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Practice::Factory(10)->create();
+        $this->call(SheetSeeder::class);
     }
 }

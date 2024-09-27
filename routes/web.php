@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\SheetController;
 
 
 Route::get('/movies',[MovieController::class,'index'])->name('movies.index');
@@ -14,3 +15,4 @@ Route::patch('/admin/movies/{id}/update',[MovieController::class, 'update'])->na
 
 Route::delete('/admin/movies/{id}/destroy',[MovieController::class, 'destroy'])->name('admin.movies.destroy');
 
+Route::get('/sheets', [SheetController::class, 'index']);
