@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use App\Models\Genre;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Models\Genre;
+
 
 
 class MovieController extends Controller
@@ -36,8 +38,18 @@ class MovieController extends Controller
     }
 
     public function create(){
-      $genres = Genre::all();
-      return view('admin.movies.create', compact('genres'));
+        $genres = Genre::all();
+        return view('admin.movies.create', compact('genres'));
+    }
+
+    public function show($id) {
+        $movie = Movie::find($id); // 指定されたIDの映画を取得
+        if (!$movie) {
+            abort(404); // 映画が見つからなければ404エラーを返す
+        }
+
+        $schedules = Schedule::where('movie_id', $id)->orderBy('start_time', 'asc')->get();
+        return view('admin.movies.show', compact('movie', 'schedules')); // show ビューを返す
     }
 
     public function store(Request $request) {
@@ -115,4 +127,15 @@ class MovieController extends Controller
 
         return redirect()->route('admin.movies.index')->with('success', '映画を削除しました。');
     }
+
+    // public function show($id) {
+    //     $movie = Movie::findOrFail($id);
+
+    //     //Schedule::where('movie_id', $movie->id)->orderBy('start_time')->get();
+    //     $schedules = Schedule::where('movie_id', $movie->id)
+    //         ->orderBy('start_time', 'asc')
+    //         ->get();
+
+    //     return view('movies.show', compact('movie', 'schedules'));
+    // }
 }

@@ -9,13 +9,13 @@
 <body>
   <div class="container">
     <h1 class="mt-4">映画一覧</h1>
-    
+
     @if (session('success'))
       <div class="alert alert-success">
           {{ session('success') }}
       </div>
     @endif
-    
+
     <table class="table table-striped mt-3">
       <thead>
         <tr>
@@ -26,6 +26,7 @@
           <th>概要</th>
           <th>ジャンル</th>
           <th>操作</th>
+          <th>詳細</th> <!-- 新しい列を追加 -->
         </tr>
       </thead>
       <tbody>
@@ -51,13 +52,19 @@
                   <button type="submit" class="btn btn-danger btn-sm">削除</button>
             </form>
           </td>
+          <td>
+            <a href="{{ route('admin.movies.show', $movie->id) }}" class="btn btn-secondary btn-sm">映画詳細ページ</a>
+            <a href="{{ route('admin.schedules.create', $movie->id) }}">スケジュールを追加</a>
+          </td>
         </tr>
         @endforeach
       </tbody>
     </table>
 
     <a href="{{ route('admin.movies.create') }}" class="btn btn-success mt-3">新規登録</a>
-    <a href="{{ route('admin.movies.index') }}" class="btn btn-info mt-3">一覧に戻る</a>
+    <a href="{{ route('admin.schedules.index') }}" class="btn btn-info mt-3">上映スケジュール一覧</a>
+
   </div>
+
 </body>
 </html>

@@ -19,7 +19,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.store') }}" method="POST">
+    <form action="{{ route('admin.movies.store') }}" method="POST">
         @csrf
         <div>
             <label for="title">映画タイトル:</label>
@@ -52,7 +52,7 @@
         </div>
 
         <button type="submit">登録する</button>
-        <a href="{{ route('admin.movies.index') }}">一覧</a>
+        <a href="{{ route('admin.movies.index') }}">一覧に戻る</a>
     </form>
 </body>
 </html>

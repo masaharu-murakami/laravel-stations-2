@@ -49,7 +49,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">更新</button>
-        <a href="{{ route('admin.movies.index') }}">一覧</a>
+        <a href="{{ route('admin.movies.index') }}">一覧に戻る</a>
     </form>
 </div>
 @endsection
