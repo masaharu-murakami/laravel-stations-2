@@ -56,7 +56,7 @@ class SheetTest extends TestCase
     public function test予約ページが表示されるか(): void
     {
         [$movieId, $scheduleId] = $this->createMovieAndSchedule();
-        $response = $this->get('/movies/'.$movieId.'/schedules/'.$scheduleId.'/reservations/create?date='.CarbonImmutable::now().'&sheetId='.Sheet::first()->id);
+        $response = $this->get('/movies/'.$movieId.'/schedules/'.$scheduleId.'/reservations/create?date='.CarbonImmutable::now().'&sheet_id='.Sheet::first()->id);
         $response->assertStatus(200);
     }
 

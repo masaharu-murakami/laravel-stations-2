@@ -4,31 +4,21 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateReservationRequest extends FormRequest
+class ReservationRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            'schedule_id' => ['required'],
-            'sheet_id' => ['required', 'exists:sheets,id'],
-            'name' => ['required'],
-            'email' => ['required', 'email:strict,dns'],
-            'date' => ['required', 'date_format:Y-m-d']
+            'movie_id' => 'required|exists:movies,id',
+            'schedule_id' => 'required|exists:schedules,id',
+            'sheet_id' => 'required|exists:sheets,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
         ];
+    }
+
+    public function authorize()
+    {
+        return true; // 認可のロジックを追加する場合は変更
     }
 }

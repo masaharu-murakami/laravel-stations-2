@@ -29,4 +29,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(Sheet::class);
     }
+
+    // public function movie()
+    // {
+    //     return $this->belongsTo(Movie::class);
+    // }
 }

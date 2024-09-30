@@ -12,16 +12,19 @@ class ReservationController extends Controller
 {
     // 予約フォームを表示するメソッド
     public function create(Request $request, $movie_id, $schedule_id)
-    {
-        if (empty($request->date) || empty($request->query('sheet_id'))) {
-            return App::abort(400);
-        }
-
-        $sheet_id = $request->query('sheet_id');
-        $date = $request->query('date');
-
-        return view('reservations.create', compact('movie_id', 'schedule_id', 'sheet_id', 'date'));
+{
+    // dateとsheet_idのクエリパラメータが存在するか確認
+    if (!$request->has('date') || !$request->has('sheet_id')) {
+        return App::abort(400);
     }
+
+    // 正しいキーでクエリパラメータを取得
+    $sheet_id = $request->query('sheet_id'); // ここは 'sheetId' にしない
+    $date = $request->query('date');
+
+    return view('reservations.create', compact('movie_id', 'schedule_id', 'sheet_id', 'date'));
+}
+
 
     // 予約を保存するメソッド
     public function store(Request $request)

@@ -3,6 +3,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\SheetController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AdminReservationController;
 
 //admin
 Route::get('/admin/movies',[MovieController::class,'admin'])->name('admin.movies.index');
@@ -30,8 +31,22 @@ Route::get('/admin/schedules/{id}/edit', [ScheduleController::class, 'edit'])->n
 Route::patch('/admin/schedules/{id}/update', [ScheduleController::class, 'update'])->name('admin.schedules.update');
 Route::delete('/admin/schedules/{id}/destroy', [ScheduleController::class, 'destroy'])->name('admin.schedules.destroy');
 
+// 管理者 予約機能
+// Admin Routes
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function () {
+  Route::get('reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
+  Route::get('reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
+  Route::post('reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
+ // Route::get('reservations/{id}', [AdminReservationController::class, 'edit'])->name('reservations.edit');
+  Route::patch('reservations/{id}', [AdminReservationController::class, 'update'])->name('reservations.update');
+  Route::delete('reservations/{id}', [AdminReservationController::class, 'destroy'])->name('reservations.destroy');
+});
+Route::get('/admin/reservations/{id}/edit', [AdminReservationController::class, 'edit'])->name('admin.reservations.edit');
 
-//カスタマー
+
+
+
+//ユーザー
 Route::get('/movies',[MovieController::class,'index'])->name('movies.index');
 Route::get('/movies/{id}', [MovieController::class, 'userShow'])->name('movies.show');
 
