@@ -28,4 +28,5 @@
             @endif
         </tbody>
     </table>
+    <a href="{{ route('admin.schedules.create', $movie->id) }}">スケジュールを追加</a>
 </div>

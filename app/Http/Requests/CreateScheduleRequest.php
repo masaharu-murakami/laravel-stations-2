@@ -19,7 +19,6 @@ class CreateScheduleRequest extends FormRequest
             'start_time_time' => [
                 'required',
                 'date_format:H:i',
-                'before:end_time_time',
             ],
             'end_time_date' => [
                 'required',
@@ -29,37 +28,43 @@ class CreateScheduleRequest extends FormRequest
             'end_time_time' => [
                 'required',
                 'date_format:H:i',
-                'after:start_time_time',
             ],
         ];
     }
 
     public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            $startTimeDate = $this->start_time_date;
-            $startTimeTime = $this->start_time_time;
-            $endTimeDate = $this->end_time_date;
-            $endTimeTime = $this->end_time_time;
+{
+    $validator->after(function ($validator) {
+        $startTimeDate = $this->start_time_date;
+        $startTimeTime = $this->start_time_time;
+        $endTimeDate = $this->end_time_date;
+        $endTimeTime = $this->end_time_time;
 
-            if ($startTimeDate && $startTimeTime && $endTimeDate && $endTimeTime) {
-                try {
-                    $startTime = Carbon::createFromFormat('Y-m-d H:i', $startTimeDate . ' ' . $startTimeTime);
-                    $endTime = Carbon::createFromFormat('Y-m-d H:i', $endTimeDate . ' ' . $endTimeTime);
-                } catch (\Exception $e) {
-                    $validator->errors()->add('start_time', '開始日時のフォーマットが無効です。');
-                    $validator->errors()->add('end_time', '終了日時のフォーマットが無効です。');
-                    return;
-                }
-
-                // 開始時刻と終了時刻の差が5分未満の場合
-                if ($startTime->diffInMinutes($endTime) < 6) {
-                    $validator->errors()->add('start_time_time', '上映時間は5分以上でなければなりません。');
-                    $validator->errors()->add('end_time_time', '上映時間は5分以上でなければなりません。');
-                }
+        if ($startTimeDate && $startTimeTime && $endTimeDate && $endTimeTime) {
+            try {
+                $startTime = Carbon::createFromFormat('Y-m-d H:i', $startTimeDate . ' ' . $startTimeTime);
+                $endTime = Carbon::createFromFormat('Y-m-d H:i', $endTimeDate . ' ' . $endTimeTime);
+            } catch (\Exception $e) {
+                $validator->errors()->add('start_time', '開始日時のフォーマットが無効です。');
+                $validator->errors()->add('end_time', '終了日時のフォーマットが無効です。');
+                return;
             }
-        });
-    }
+
+            // 開始時刻と終了時刻の差が5分未満の場合
+            if ($startTime->diffInMinutes($endTime) < 6) {
+                $validator->errors()->add('start_time_time', '上映時間は5分以上でなければなりません。');
+                $validator->errors()->add('end_time_time', '上映時間は5分以上でなければなりません。');
+            }
+
+            // 開始時刻が終了時刻よりも前であることを確認
+            if ($startTime->greaterThanOrEqualTo($endTime)) {
+                $validator->errors()->add('start_time_time', '開始時刻は終了時刻よりも前でなければなりません。');
+                $validator->errors()->add('end_time_time', '開始時刻は終了時刻よりも前でなければなりません。');
+            }
+        }
+    });
+}
+
 
     public function authorize()
     {

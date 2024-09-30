@@ -6,18 +6,18 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\App;
-use Carbon\CarbonImmutable;
+use Carbon\CarbonImmutable; // Carbonをインポート
 
 class ReservationController extends Controller
 {
     // 予約フォームを表示するメソッド
     public function create(Request $request, $movie_id, $schedule_id)
     {
-        if (empty($request->date) || empty($request->query('sheetId'))) {
+        if (empty($request->date) || empty($request->query('sheet_id'))) {
             return App::abort(400);
         }
 
-        $sheet_id = $request->query('sheetId');
+        $sheet_id = $request->query('sheet_id');
         $date = $request->query('date');
 
         return view('reservations.create', compact('movie_id', 'schedule_id', 'sheet_id', 'date'));
@@ -60,6 +60,11 @@ class ReservationController extends Controller
             'email' => $request->email,
             'date' => CarbonImmutable::parse($request->date)->format('Y-m-d'), // 日付を正しい形式で保存
         ]);
+
+        $movie_id = $request->input('movie_id');
+        if (!$movie_id) {
+            return redirect()->back()->withErrors(['message' => '映画IDが必要です。']);
+        }
 
         return redirect()->route('movies.show', ['id' => $request->movie_id])
             ->with('success', '予約が完了しました');

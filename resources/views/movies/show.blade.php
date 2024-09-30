@@ -15,25 +15,28 @@
             <tr>
                 <th style="padding: 8px; text-align: left;">開始時刻</th>
                 <th style="padding: 8px; text-align: left;">終了時刻</th>
+                <th style="padding: 8px; text-align: left;">アクション</th>
             </tr>
         </thead>
         <tbody>
             @if($schedules->isEmpty())
                 <tr>
-                    <td colspan="2" style="text-align: center;">スケジュールは設定されていません。</td>
+                    <td colspan="3" style="text-align: center;">スケジュールは設定されていません。</td>
                 </tr>
             @else
                 @foreach($schedules as $schedule)
                     <tr>
                         <td style="padding: 8px;">{{ $schedule->start_time->format('Y-m-d H:i:s') }}</td>
                         <td style="padding: 8px;">{{ $schedule->end_time->format('Y-m-d H:i:s') }}</td>
+                        <td style="padding: 8px;">
+                            <a href="{{ route('sheets.index', ['movie_id' => $movie->id, 'schedule_id' => $schedule->id, 'date' => today()->format('Y-m-d')]) }}" class="btn btn-primary">
+                                座席を予約する
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             @endif
         </tbody>
     </table>
-    <a href="{{ route('admin.schedules.sheets', ['movie_id' => $movie->id, 'schedule_id' => $schedule->id, 'date' => $date]) }}">
-    座席を予約する
-    </a>
 </div>
 @endsection

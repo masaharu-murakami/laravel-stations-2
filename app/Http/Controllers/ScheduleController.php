@@ -39,20 +39,19 @@ class ScheduleController extends Controller
         // 開始時刻と終了時刻を Carbon インスタンスに変換
         $startTime = Carbon::createFromFormat('Y-m-d H:i', $request->start_time_date . ' ' . $request->start_time_time);
         $endTime = Carbon::createFromFormat('Y-m-d H:i', $request->end_time_date . ' ' . $request->end_time_time);
-    
+
         // 映画を取得
         $movie = Movie::findOrFail($request->movie_id);
-    
+
         // スケジュールを作成
         Schedule::create([
             'movie_id' => $request->movie_id,
             'start_time' => $startTime,
             'end_time' => $endTime,
         ]);
-    
+
         return redirect()->route('admin.schedules.index')->with('success', 'スケジュールを作成しました');
     }
-    
 
 
 

@@ -12,10 +12,14 @@
     <h1>座席表</h1>
     <p>スクリーン</p>
     <table border="1">
-        @foreach (['a', 'b', 'c'] as $row)
+        @foreach (['a', 'b', 'c'] as $row)  <!-- 行のループ -->
             <tr>
-                @foreach ($sheets->where('row', $row) as $sheet)
-                    <td>{{ $row }}-{{ $sheet->column }}</td>
+                @foreach($sheets as $sheet)
+                    <td>
+                        <a href="{{ route('reservations.create', ['movie_id' => $movie_id, 'schedule_id' => $schedule_id, 'sheet_id' => $sheet->id, 'date' => $date]) }}">
+                            {{ $sheet->row }}-{{ $sheet->column }}
+                        </a>
+                    </td>
                 @endforeach
             </tr>
         @endforeach

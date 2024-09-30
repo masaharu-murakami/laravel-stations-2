@@ -128,14 +128,14 @@ class MovieController extends Controller
         return redirect()->route('admin.movies.index')->with('success', '映画を削除しました。');
     }
 
-    // public function show($id) {
-    //     $movie = Movie::findOrFail($id);
+   // 一般ユーザー用の映画詳細画面
+   public function userShow($id) {
+    $movie = Movie::find($id);
+    if (!$movie) {
+        abort(404);
+    }
 
-    //     //Schedule::where('movie_id', $movie->id)->orderBy('start_time')->get();
-    //     $schedules = Schedule::where('movie_id', $movie->id)
-    //         ->orderBy('start_time', 'asc')
-    //         ->get();
-
-    //     return view('movies.show', compact('movie', 'schedules'));
-    // }
+    $schedules = Schedule::where('movie_id', $id)->orderBy('start_time', 'asc')->get();
+    return view('movies.show', compact('movie', 'schedules'));
+}
 }

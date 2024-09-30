@@ -11,7 +11,8 @@ class Sheet extends Model{
     // マスアサインメントを許可するカラム
     protected $fillable = ['column', 'row'];
 
-    public function movie(){
-        return $this->belongsTo(Movie::class, 'movie_id');
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }
