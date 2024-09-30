@@ -30,7 +30,7 @@ class ReservationController extends Controller
             'schedule_id' => 'required|exists:schedules,id',
             'sheet_id' => 'required|exists:sheets,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255', // 最大255文字に制限
             'date' => 'required|date',
         ]);
 
@@ -45,11 +45,7 @@ class ReservationController extends Controller
             ->first();
 
         if ($existingReservation) {
-            return redirect()->route('sheets.index', [
-                'movie_id' => $request->movie_id,
-                'schedule_id' => $request->schedule_id,
-                'date' => $request->date,
-            ])->withErrors(['sheet' => 'その座席はすでに予約済みです']);
+            return redirect()->back()->withErrors(['sheet_id' => 'その座席はすでに予約済みです'])->withInput();
         }
 
         // 予約を作成
@@ -61,12 +57,6 @@ class ReservationController extends Controller
             'date' => CarbonImmutable::parse($request->date)->format('Y-m-d'), // 日付を正しい形式で保存
         ]);
 
-        $movie_id = $request->input('movie_id');
-        if (!$movie_id) {
-            return redirect()->back()->withErrors(['message' => '映画IDが必要です。']);
-        }
-
-        return redirect()->route('movies.show', ['id' => $request->movie_id])
-            ->with('success', '予約が完了しました');
+        return redirect()->route('movies.index')->with('success', '予約が完了しました');
     }
 }
